@@ -165,6 +165,11 @@ export interface OptionsNormalized<T = string[], U = T> {
    */
   group_columns_by_name: boolean;
   /**
+   * When duplicate header names are found, add a suffix to make them unique.
+   * If true, uses "_2", "_3", etc. Only works when columns mode is activated.
+   */
+  duplicate_header_suffix: boolean;
+  /**
    * Don't interpret delimiters as such in the last field according to the number of fields calculated from the number of columns, the option require the presence of the `column` option when `true`.
    */
   ignore_last_delimiters: boolean | number;
@@ -340,6 +345,12 @@ export interface Options<T = string[], U = T> {
    * when multiple columns of the same name are found.
    */
   group_columns_by_name?: OptionsNormalized["group_columns_by_name"];
+  /**
+   * When duplicate header names are found, add a suffix to make them unique.
+   * If true, uses "_2", "_3", etc. Only works when columns mode is activated.
+   */
+  duplicate_header_suffix?: OptionsNormalized["duplicate_header_suffix"];
+  duplicateHeaderSuffix?: OptionsNormalized["duplicate_header_suffix"];
   groupColumnsByName?: OptionsNormalized["group_columns_by_name"];
   /**
    * Don't interpret delimiters as such in the last field according to the number of fields calculated from the number of columns, the option require the presence of the `column` option when `true`.

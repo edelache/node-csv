@@ -26,6 +26,7 @@ It implements the Node.js [`stream.Transform` API](http://nodejs.org/api/stream.
 - Support delimiters, quotes, escape characters and comments
 - Line breaks discovery
 - Support big datasets
+- Handle duplicate headers with customizable suffixes
 - Complete test coverage and lot of samples for inspiration
 - No external dependencies
 - Work nicely with the [csv-generate](https://csv.js.org/generate/), [stream-transform](https://csv.js.org/transform/) and [csv-stringify](https://csv.js.org/stringify/) packages
@@ -73,6 +74,31 @@ parser.write("root:x:0:0:root:/root:/bin/bash\n");
 parser.write("someone:x:1022:1022::/home/someone:/bin/bash\n");
 // Close the readable stream
 parser.end();
+```
+
+## Duplicate Headers
+
+When CSV files contain duplicate header names, the parser can add numeric suffixes to make them unique:
+
+```js
+import { parse } from "csv-parse";
+
+const records = [];
+const parser = parse({
+  columns: true,
+  duplicate_header_suffix: true
+});
+
+parser.on("readable", function () {
+  let record;
+  while ((record = parser.read()) !== null) {
+    records.push(record);
+  }
+});
+
+parser.write("name,age,name,email\nJohn,30,Jane,john@example.com\n");
+parser.end();
+// Result: [{ name: "John", age: "30", name_2: "Jane", email: "john@example.com" }]
 ```
 
 ## Contributors

@@ -647,7 +647,7 @@ const transform = function (original_options = {}) {
             ),
           );
         }
-        const normalizedHeaders = normalize_columns_array(headers);
+        const normalizedHeaders = normalize_columns_array(headers, this.options.duplicate_header_suffix);
         this.state.expectedRecordLength = normalizedHeaders.length;
         this.options.columns = normalizedHeaders;
         this.__resetRecord();

@@ -103,7 +103,7 @@ const normalize_options = function (opts) {
     options.cast_first_line_to_header = options.columns;
     options.columns = true;
   } else if (Array.isArray(options.columns)) {
-    options.columns = normalize_columns_array(options.columns);
+    options.columns = normalize_columns_array(options.columns, options.duplicate_header_suffix);
   } else if (
     options.columns === undefined ||
     options.columns === null ||
@@ -143,6 +143,42 @@ const normalize_options = function (opts) {
       "CSV_INVALID_OPTION_GROUP_COLUMNS_BY_NAME",
       [
         "Invalid option group_columns_by_name:",
+        "the `columns` mode must be activated.",
+      ],
+      options,
+    );
+  }
+  // Normalize option `duplicate_header_suffix`
+  // Handle both snake_case and camelCase versions
+  const duplicateHeaderSuffix = options.duplicate_header_suffix !== undefined
+    ? options.duplicate_header_suffix
+    : options.duplicateHeaderSuffix;
+
+  if (
+    duplicateHeaderSuffix === undefined ||
+    duplicateHeaderSuffix === null ||
+    duplicateHeaderSuffix === false
+  ) {
+    options.duplicate_header_suffix = false;
+  } else if (duplicateHeaderSuffix === true) {
+    options.duplicate_header_suffix = true;
+  } else {
+    throw new CsvError(
+      "CSV_INVALID_OPTION_DUPLICATE_HEADER_SUFFIX",
+      [
+        "Invalid option duplicate_header_suffix:",
+        "expect a boolean value,",
+        `got ${JSON.stringify(duplicateHeaderSuffix)}`,
+      ],
+      options,
+    );
+  }
+
+  if (options.duplicate_header_suffix !== false && options.columns === false) {
+    throw new CsvError(
+      "CSV_INVALID_OPTION_DUPLICATE_HEADER_SUFFIX",
+      [
+        "Invalid option duplicate_header_suffix:",
         "the `columns` mode must be activated.",
       ],
       options,
