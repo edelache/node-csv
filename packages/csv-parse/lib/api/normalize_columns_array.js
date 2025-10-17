@@ -2,6 +2,7 @@ import { CsvError } from "./CsvError.js";
 import { is_object } from "../utils/is_object.js";
 
 const normalize_columns_array = function (columns, duplicate_header_suffix = false) {
+  console.log("duplicate_header_suffix", duplicate_header_suffix);
   const normalizedColumns = [];
   const headerCounts = {};
 
